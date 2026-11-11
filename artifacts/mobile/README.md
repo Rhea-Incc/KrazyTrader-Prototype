@@ -1,24 +1,26 @@
-# KrazyTrader mobile foundation
+# KrazyTrader mobile prototype
 
-Phase 01 is an Android-oriented Expo Router shell for a Kenyan rider membership platform. It contains navigable sample screens and reusable foundations; it does not submit applications or connect to live services.
+Phase 02 extends the Android-oriented Expo app with a branded welcome and local demo sign-in, five-step rider registration, SACCO selection, membership states, a rider homepage and profile, and a complete local-only financing demonstration.
 
 ## Structure
 
-- `app/` — Expo Router screens, five primary tabs, and secondary demo routes
-- `components/` — shared mobile UI pieces and feature-route placeholder
-- `constants/` — shared semantic design tokens
-- `data/` — fictional rider, SACCO, vehicle, partner, benefit, and notification records
-- `types/` — product domain types and workflow status unions
-- `utils/` — KES currency and date formatting helpers
+- `app/` — Expo Router welcome/login routes, five primary tabs, registration and financing flows, and development controls
+- `components/` — shared mobile UI, forms, status indicators and reusable cards
+- `context/` — locally persisted demo account, membership, notification and financing state
+- `constants/` — semantic design tokens
+- `data/` — fictional Kenyan rider, SACCO, vehicle, partner, benefit and notification records
+- `types/` — rider, membership, financing and registration models
+- `assets/images/` — supplied KrazyTrader logo and optimized vehicle photos
 
-## Architecture decisions
+## Demo flows
 
-- Expo Router owns navigation; each future module has a distinct route before its full workflow is built.
-- The mobile client owns this phase's predictable demo state. There is no production API, database, or account session.
-- UI colors and typography use shared tokens and the scaffold's Inter font; reusable cards, fields, status indicators, and dialogs live outside screens.
-- Registration is an interaction preview only. It validates sample fields locally and clearly states that information is not saved or sent.
-- All organizations, rider details, prices, and offers are fictional examples for Kenya.
+- Login uses `+254 700 000 128` and the fixed verification code `123456`; no SMS is sent.
+- Registration collects fictional sample details, lets the rider search/select a fictional SACCO, and saves a `Submitted` application locally.
+- Membership states are distinct: Submitted, Pending verification, Active, Rejected and Inactive. Developer-only controls can switch states and reset local demo data.
+- Member benefits and insurance/safety routes remain gated until the membership is Active.
+- Financing guides a rider through vehicle selection, deposit and term choices, a principal-only estimate, review and a locally saved request reference.
+- Profile edits, notification preferences, membership state and demo financing requests persist in AsyncStorage on the device.
 
 ## Prototype boundaries
 
-Authentication, real SMS/OTP, KYC, membership contributions, vehicle transactions, lender or insurer connections, emergency dispatch, and guarantee-pool functionality are not implemented.
+No production authentication, SMS, identity verification, SACCO system, lender, credit check, insurance provider, payment processing or emergency dispatch is connected. Financing estimates are illustrative and exclude interest and fees. Use fictional information only.

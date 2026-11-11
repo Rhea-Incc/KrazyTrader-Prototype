@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { ActionButton, PageHeader, Panel, Screen } from '@/components/ui';
 import { demoBenefits, demoDealers, demoPartners, demoSaccos, demoVehicles } from '@/data/demo';
 import { useColors } from '@/hooks/useColors';
@@ -24,6 +24,7 @@ export default function DetailScreen() {
   return (
     <Screen>
       <PageHeader title="Details" subtitle="Fictional demonstration record" back={() => router.back()} />
+      {vehicle ? <Image source={vehicle.imageSource} resizeMode="cover" style={styles.vehicleHero} /> : null}
       <Panel style={styles.hero}>
         <View style={[styles.heroIcon, { backgroundColor: colors.secondary }]}>
           <Feather name={isSacco ? 'users' : isVehicle ? 'truck' : 'gift'} size={24} color={colors.primary} />
@@ -60,7 +61,10 @@ export default function DetailScreen() {
       <ActionButton
         title={isVehicle ? 'Financing route' : isSacco ? 'Membership route' : 'See all benefits'}
         icon="arrow-right"
-        onPress={() => router.push(isVehicle ? '/financing' : isSacco ? '/membership' : '/benefits')}
+        onPress={() => {
+          if (vehicle) router.push({ pathname: '/financing', params: { vehicleId: vehicle.id } });
+          else router.push(isSacco ? '/membership' : '/benefits');
+        }}
       />
     </Screen>
   );
@@ -77,6 +81,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 const styles = StyleSheet.create({
+  vehicleHero: { width: '100%', height: 210, borderRadius: 18 },
   hero: { gap: 13, padding: 20 },
   heroIcon: { width: 54, height: 54, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
   title: { fontFamily: 'Inter_700Bold', fontSize: 21, lineHeight: 28 },

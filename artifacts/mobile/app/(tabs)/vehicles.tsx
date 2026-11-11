@@ -30,7 +30,7 @@ export default function VehiclesScreen() {
           <Text style={[styles.financeTitle, { color: colors.foreground }]}>Looking at financing?</Text>
           <Text style={[styles.financeDescription, { color: colors.mutedForeground }]}>See the planned route for demo financing information.</Text>
         </View>
-        <ActionButton title="Financing preview" variant="secondary" icon="arrow-right" onPress={() => router.push('/financing')} />
+        <ActionButton title="Try demo financing" variant="secondary" icon="arrow-right" onPress={() => router.push('/financing')} />
       </Panel>
     </Screen>
   );

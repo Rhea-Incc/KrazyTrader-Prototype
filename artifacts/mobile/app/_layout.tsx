@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { DemoAppProvider } from '@/context/DemoAppContext';
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -28,12 +29,18 @@ function RootLayoutNav() {
     <>
       <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
+        <Stack.Screen name="index" />
         <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="welcome" />
+        <Stack.Screen name="login" />
+        <Stack.Screen name="verify" />
         <Stack.Screen name="registration" />
         <Stack.Screen name="financing" />
         <Stack.Screen name="insurance" />
         <Stack.Screen name="notifications" />
         <Stack.Screen name="support" />
+        <Stack.Screen name="profile-edit" />
+        <Stack.Screen name="developer-tools" />
         <Stack.Screen name="details/[kind]" />
       </Stack>
     </>
@@ -60,11 +67,13 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <GestureHandlerRootView>
-            <KeyboardProvider>
-              <RootLayoutNav />
-            </KeyboardProvider>
-          </GestureHandlerRootView>
+          <DemoAppProvider>
+            <GestureHandlerRootView>
+              <KeyboardProvider>
+                <RootLayoutNav />
+              </KeyboardProvider>
+            </GestureHandlerRootView>
+          </DemoAppProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     </SafeAreaProvider>

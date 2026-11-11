@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { router } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
 import { NotificationItem, PageHeader, Screen, SectionHeader, StatePanel } from '@/components/ui';
-import { demoNotifications } from '@/data/demo';
-import type { AppNotification } from '@/types/domain';
+import { useDemoApp } from '@/context/DemoAppContext';
 import { formatShortDate } from '@/utils/format';
 import { useColors } from '@/hooks/useColors';
 
 export default function NotificationsScreen() {
   const colors = useColors();
-  const [notifications, setNotifications] = useState<AppNotification[]>(demoNotifications);
+  const { notifications, markNotificationRead } = useDemoApp();
   return (
     <Screen>
       <PageHeader title="Notifications" subtitle="Updates from your demo account" back={() => router.back()} />
@@ -23,12 +22,10 @@ export default function NotificationsScreen() {
               message={item.message}
               date={formatShortDate(item.createdAt)}
               read={item.read}
-              onPress={() => setNotifications((current) => current.map((notification) => (
-                notification.id === item.id ? { ...notification, read: true } : notification
-              )))}
+              onPress={() => markNotificationRead(item.id)}
             />
           ))}
-          <Text style={[styles.note, { color: colors.mutedForeground }]}>Tap an update to mark it as read. These changes only last for this preview session.</Text>
+          <Text style={[styles.note, { color: colors.mutedForeground }]}>Tap an update to mark it as read. Demo notifications are saved on this device.</Text>
         </View>
       ) : (
         <StatePanel variant="empty" title="You’re all caught up" message="New updates will appear here." />

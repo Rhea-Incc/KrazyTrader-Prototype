@@ -1,6 +1,6 @@
 # KrazyTrader
 
-A mobile membership platform foundation for Kenyan boda-boda riders and three-wheeler operators, connecting future SACCO, vehicle, financing, protection, and local-benefit journeys.
+An Android-oriented Expo prototype for Kenyan boda-boda riders and three-wheeler operators. Phase 02 includes local demo sign-in, rider onboarding, fictional SACCO affiliation, membership states, a personalized homepage and profile, supplied brand/vehicle imagery, and an illustrative local financing journey.
 
 ## Run & Operate
 
@@ -10,7 +10,7 @@ A mobile membership platform foundation for Kenyan boda-boda riders and three-wh
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- The Phase 01 mobile prototype uses local fictional data and does not require a database.
+- The Phase 02 mobile prototype uses AsyncStorage and fictional data; it does not require a database.
 
 ## Stack
 
@@ -23,25 +23,29 @@ A mobile membership platform foundation for Kenyan boda-boda riders and three-wh
 
 ## Where things live
 
-- `artifacts/mobile/app/` — Expo Router tabs and secondary routes
+- `artifacts/mobile/app/` — Expo Router welcome/login, onboarding, tabs, financing and secondary routes
 - `artifacts/mobile/components/` — shared mobile UI components
+- `artifacts/mobile/context/` — locally persisted demo rider, membership, notification and financing state
 - `artifacts/mobile/constants/colors.ts` — brand design tokens
 - `artifacts/mobile/types/domain.ts` and `data/demo.ts` — domain models and fictional sample records
 - `artifacts/mobile/README.md` — mobile architecture and prototype boundaries
 
 ## Architecture decisions
 
-- Phase 01 is a local demonstration prototype; do not add real authentication, payments, KYC, transactions, or production service integrations.
-- Expo Router file-based navigation defines the five primary tabs and secondary module routes.
-- Use shared brand tokens and fictional Kenyan demo records; format displayed prices in KES.
+- The app uses AsyncStorage for local prototype flows. Keep real authentication, SMS, KYC, SACCO, lender, payment, insurance and emergency integrations out of this prototype.
+- The login flow uses a fixed displayed demo code; it is not production authentication.
+- Expo Router file-based navigation defines welcome/login routes, five primary tabs and secondary routes.
+- Use shared brand tokens, the supplied KrazyTrader logo, fictional Kenyan demo records and KES formatting.
+- Membership benefits and insurance/safety remain gated until membership is Active; submitting an application never means approval.
+- Financing uses illustrative principal-only estimates and is not a lender quote or credit decision.
 
 ## Product
 
-KrazyTrader is intended to connect riders with SACCO membership, vehicle dealers and financing opportunities, insurance and emergency assistance, maintenance partners, fuel, tyres, and other member benefits. The current app provides a navigable foundation and examples only; do not begin Phase 02 unless the user asks.
+KrazyTrader connects riders with SACCO membership, vehicle dealers and financing opportunities, insurance and emergency assistance, maintenance partners, fuel, tyres, and other member benefits. Phase 02 is implemented as a local prototype; do not proceed to Phase 03 without a new request.
 
 ## User preferences
 
-The user requested a Phase 01 prototype foundation and explicitly asked not to proceed to Phase 02 automatically.
+The user requested Phase 02 onboarding and membership, plus an illustrative financing workflow in this phase. Do not proceed to Phase 03 automatically.
 
 ## Gotchas
 

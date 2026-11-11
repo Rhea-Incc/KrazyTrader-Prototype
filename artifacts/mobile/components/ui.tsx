@@ -3,11 +3,13 @@ import * as Haptics from 'expo-haptics';
 import React, { useState } from 'react';
 import {
   ActivityIndicator,
+  Image,
   Modal,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
+  Switch,
   Text,
   TextInput,
   View,
@@ -61,16 +63,13 @@ export function Screen({
 }
 
 export function BrandMark({ size = 42 }: { size?: number }) {
-  const colors = useColors();
   return (
-    <View
-      accessibilityLabel="KrazyTrader"
-      style={[
-        styles.brandMark,
-        { width: size, height: size, borderRadius: size / 3, backgroundColor: colors.primary },
-      ]}
-    >
-      <Feather name="navigation" size={size * 0.48} color={colors.accent} />
+    <View accessibilityLabel="KrazyTrader" style={[styles.brandMark, { width: size, height: size }]}>
+      <Image
+        source={require('../assets/images/krazytrader-logo.png')}
+        resizeMode="contain"
+        style={{ width: size, height: size }}
+      />
     </View>
   );
 }
@@ -219,9 +218,9 @@ export function Panel({
 export function MembershipStatusIndicator({ status }: { status: MembershipStatus }) {
   const colors = useColors();
   const palette =
-    status === 'Approved'
+    status === 'Active'
       ? { backgroundColor: colors.successSoft, color: colors.success, icon: 'check-circle' as const }
-      : status === 'Pending'
+      : status === 'Submitted' || status === 'Pending verification'
         ? { backgroundColor: colors.warningSoft, color: colors.warning, icon: 'clock' as const }
         : status === 'Rejected'
           ? { backgroundColor: colors.dangerSoft, color: colors.destructive, icon: 'alert-circle' as const }
@@ -255,6 +254,76 @@ export function TextField({
         ]}
       />
       {error ? <Text style={[styles.fieldError, { color: colors.destructive }]}>{error}</Text> : null}
+    </View>
+  );
+}
+
+export function CheckboxRow({
+  checked,
+  onPress,
+  title,
+  detail,
+  testID,
+}: {
+  checked: boolean;
+  onPress: () => void;
+  title: string;
+  detail?: string;
+  testID?: string;
+}) {
+  const colors = useColors();
+  return (
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked }}
+      onPress={onPress}
+      testID={testID}
+      style={({ pressed }) => [styles.checkRow, pressed && styles.pressed]}
+    >
+      <View
+        style={[
+          styles.checkbox,
+          {
+            borderColor: checked ? colors.primary : colors.input,
+            backgroundColor: checked ? colors.primary : colors.background,
+          },
+        ]}
+      >
+        {checked ? <Feather name="check" size={14} color={colors.primaryForeground} /> : null}
+      </View>
+      <View style={styles.checkCopy}>
+        <Text style={[styles.checkTitle, { color: colors.foreground }]}>{title}</Text>
+        {detail ? <Text style={[styles.checkDetail, { color: colors.mutedForeground }]}>{detail}</Text> : null}
+      </View>
+    </Pressable>
+  );
+}
+
+export function PreferenceRow({
+  title,
+  detail,
+  value,
+  onValueChange,
+}: {
+  title: string;
+  detail: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}) {
+  const colors = useColors();
+  return (
+    <View style={styles.preferenceRow}>
+      <View style={styles.checkCopy}>
+        <Text style={[styles.checkTitle, { color: colors.foreground }]}>{title}</Text>
+        <Text style={[styles.checkDetail, { color: colors.mutedForeground }]}>{detail}</Text>
+      </View>
+      <Switch
+        accessibilityLabel={title}
+        value={value}
+        onValueChange={onValueChange}
+        trackColor={{ false: colors.border, true: colors.primary }}
+        thumbColor={colors.background}
+      />
     </View>
   );
 }
@@ -336,9 +405,11 @@ export function SelectField({
 export function VehicleCard({
   vehicle,
   onPress,
+  selected = false,
 }: {
   vehicle: Vehicle;
   onPress: () => void;
+  selected?: boolean;
 }) {
   const colors = useColors();
   return (
@@ -347,13 +418,14 @@ export function VehicleCard({
       onPress={onPress}
       style={({ pressed }) => [
         styles.vehicleCard,
-        { borderColor: colors.border, backgroundColor: colors.card },
+        {
+          borderColor: selected ? colors.primary : colors.border,
+          backgroundColor: selected ? colors.secondary : colors.card,
+        },
         pressed && styles.pressed,
       ]}
     >
-      <View style={[styles.vehicleIcon, { backgroundColor: colors.secondary }]}>
-        <Feather name={vehicle.category === 'Motorcycle' ? 'truck' : 'truck'} size={22} color={colors.primary} />
-      </View>
+      <Image source={vehicle.imageSource} resizeMode="cover" style={styles.vehicleImage} />
       <View style={styles.vehicleCopy}>
         <Text style={[styles.cardTitle, { color: colors.foreground }]}>{vehicle.make} {vehicle.model}</Text>
         <Text style={[styles.cardMeta, { color: colors.mutedForeground }]}>{vehicle.year} · {vehicle.category}</Text>
@@ -577,6 +649,12 @@ const styles = StyleSheet.create({
   fieldLabel: { fontFamily: 'Inter_600SemiBold', fontSize: 13 },
   input: { minHeight: 50, paddingHorizontal: 14, borderWidth: 1, borderRadius: 13, fontFamily: 'Inter_400Regular', fontSize: 15 },
   fieldError: { fontFamily: 'Inter_400Regular', fontSize: 12 },
+  checkRow: { minHeight: 48, flexDirection: 'row', alignItems: 'flex-start', gap: 11 },
+  checkbox: { width: 22, height: 22, borderWidth: 1.5, borderRadius: 7, alignItems: 'center', justifyContent: 'center', marginTop: 1 },
+  checkCopy: { flex: 1, gap: 3 },
+  checkTitle: { fontFamily: 'Inter_500Medium', fontSize: 13, lineHeight: 18 },
+  checkDetail: { fontFamily: 'Inter_400Regular', fontSize: 12, lineHeight: 17 },
+  preferenceRow: { minHeight: 70, flexDirection: 'row', alignItems: 'center', gap: 12 },
   selectButton: { minHeight: 50, paddingHorizontal: 14, borderWidth: 1, borderRadius: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   selectText: { fontFamily: 'Inter_400Regular', fontSize: 15 },
   modalScrim: { flex: 1, backgroundColor: 'rgba(12, 23, 40, 0.42)', justifyContent: 'flex-end' },
@@ -585,9 +663,9 @@ const styles = StyleSheet.create({
   sheetTitle: { fontFamily: 'Inter_700Bold', fontSize: 18 },
   optionRow: { minHeight: 54, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   optionText: { fontFamily: 'Inter_500Medium', fontSize: 15 },
-  vehicleCard: { minHeight: 94, flexDirection: 'row', alignItems: 'center', gap: 13, paddingVertical: 13, paddingHorizontal: 14, borderRadius: 16, borderWidth: 1 },
-  vehicleIcon: { width: 52, height: 52, borderRadius: 15, alignItems: 'center', justifyContent: 'center' },
-  vehicleCopy: { flex: 1, gap: 3 },
+  vehicleCard: { minHeight: 112, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 10, borderRadius: 16, borderWidth: 1 },
+  vehicleImage: { width: 112, height: 92, borderRadius: 12 },
+  vehicleCopy: { flex: 1, gap: 3, minWidth: 0 },
   cardTitle: { fontFamily: 'Inter_600SemiBold', fontSize: 15, lineHeight: 21 },
   cardMeta: { fontFamily: 'Inter_400Regular', fontSize: 12, lineHeight: 17 },
   vehiclePrice: { fontFamily: 'Inter_700Bold', fontSize: 14, marginTop: 2 },

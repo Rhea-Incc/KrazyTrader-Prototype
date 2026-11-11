@@ -1,4 +1,11 @@
-export type MembershipStatus = 'Pending' | 'Approved' | 'Rejected' | 'Inactive';
+import type { ImageSourcePropType } from 'react-native';
+
+export type MembershipStatus =
+  | 'Submitted'
+  | 'Pending verification'
+  | 'Active'
+  | 'Rejected'
+  | 'Inactive';
 export type RequestStatus = 'Draft' | 'Submitted' | 'In review' | 'Approved' | 'Declined';
 
 export interface Rider {
@@ -8,6 +15,10 @@ export interface Rider {
   phone: string;
   county: string;
   town: string;
+  email?: string;
+  dateOfBirth?: string;
+  occupation?: string;
+  vehicleCategory?: 'Two-wheeler' | 'Three-wheeler';
   createdAt: string;
   updatedAt: string;
 }
@@ -29,6 +40,8 @@ export interface Membership {
   saccoId: string;
   memberNumber?: string;
   status: MembershipStatus;
+  applicationNumber?: string;
+  verificationStatus?: 'Not started' | 'Not verified' | 'Pending review' | 'Verified';
   joinedAt: string;
   updatedAt: string;
 }
@@ -42,6 +55,7 @@ export interface Vehicle {
   priceKsh: number;
   description: string;
   dealerId: string;
+  imageSource: ImageSourcePropType;
   createdAt: string;
   updatedAt: string;
 }
@@ -67,13 +81,41 @@ export interface VehicleInquiry {
 
 export interface FinancingApplication {
   id: string;
+  reference: string;
   riderId: string;
   vehicleId: string;
   provider: string;
   amountKsh: number;
+  depositKsh: number;
+  termMonths: number;
+  estimatedMonthlyKsh: number;
   status: RequestStatus;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface RegistrationDraft {
+  step: number;
+  fullName: string;
+  phone: string;
+  email: string;
+  dateOfBirth: string;
+  county: string;
+  town: string;
+  occupation: string;
+  vehicleCategory: '' | 'Two-wheeler' | 'Three-wheeler';
+  saccoId: string;
+  idType: string;
+  idNumber: string;
+  idDocumentSelected: boolean;
+  riderPhotoSelected: boolean;
+  acceptedTerms: boolean;
+  declaration: boolean;
+}
+
+export interface NotificationPreferences {
+  membershipUpdates: boolean;
+  partnerOffers: boolean;
 }
 
 export interface Partner {

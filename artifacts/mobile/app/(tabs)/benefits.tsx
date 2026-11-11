@@ -1,12 +1,27 @@
 import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BenefitCard, PageHeader, Screen, SectionHeader } from '@/components/ui';
+import { BenefitCard, PageHeader, Screen, SectionHeader, StatePanel, ActionButton } from '@/components/ui';
+import { useDemoApp } from '@/context/DemoAppContext';
 import { demoBenefits, demoPartners } from '@/data/demo';
 import { useColors } from '@/hooks/useColors';
 
 export default function BenefitsScreen() {
   const colors = useColors();
+  const { membership } = useDemoApp();
+  if (membership?.status !== 'Active') {
+    return (
+      <Screen>
+        <PageHeader title="Member benefits" subtitle="Local offers for everyday work" />
+        <StatePanel
+          variant="empty"
+          title="Benefits unlock with active membership"
+          message="Your current membership is not active. This screen will show fictional partner offers after the demo membership is set to Active."
+        />
+        <ActionButton title="View membership status" icon="users" onPress={() => router.push('/membership')} />
+      </Screen>
+    );
+  }
   return (
     <Screen>
       <PageHeader title="Member benefits" subtitle="Local offers for everyday work" rightIcon="bell" onRightPress={() => router.push('/notifications')} />

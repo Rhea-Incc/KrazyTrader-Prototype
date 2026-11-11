@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "D3ATViPxTBDLtjxmjs8VW"
+uri = "file://generated-artifacts/krazytrader-phase2-welcome.jpg"
+type = "image"
+title = "KrazyTrader Phase 2 welcome screen"
+description = "The logged-out welcome and demo-mode entry screen."
+logical_id = "6af92e74-6de1-4b0e-88d1-ec9dbf68009c"
+content_hash = "sha256:85fb157a259bd91f66e9ad6f4d6c3f5699ca20baf0e92eae76b3c541a66e9545"
+size = 38800
+mtime_ms = 1794386163241
+storage_uri = "gcs://replit-rams-assets-kirk/rams/assets/repl:c2404f35-1542-4ae1-93ed-587b54edfc34/6af92e74-6de1-4b0e-88d1-ec9dbf68009c/8e6810be-907c-4325-b491-5ded9fede7fd"
+storage_version_token = "1794386188621982"
+content_type = "image/jpeg"
